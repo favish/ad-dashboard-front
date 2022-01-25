@@ -4,7 +4,7 @@ import Order from '../components/Order';
 const apiEndpoint = "https://strapi-iteh.onrender.com/api";
 
 export async function getStaticProps() {
-    const res = await fetch(apiEndpoint + '?[populate]=*');
+    const res = await fetch(apiEndpoint + '/orders?[populate]=*');
     const sortedOrderData = await res.json();
     const status = [
         'awaiting_creatives',
