@@ -1,8 +1,10 @@
 import Layout  from '../components/layout';
 import Order from '../components/Order';
 
+const apiEndpoint = "https://ad-dashboard.onrender.com/api";
+
 export async function getStaticProps() {
-    const res = await fetch('http://localhost:1337/api/orders?[populate]=*');
+    const res = await fetch(apiEndpoint + '?[populate]=*');
     const sortedOrderData = await res.json();
     const status = [
         'awaiting_creatives',
