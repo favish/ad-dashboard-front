@@ -1,7 +1,7 @@
 import Layout  from '../components/layout';
 import Order from '../components/Order';
 
-const apiEndpoint = "https://ad-dashboard.onrender.com/api";
+const apiEndpoint = "https://strapi-iteh.onrender.com/api";
 
 export async function getStaticProps() {
     const res = await fetch(apiEndpoint + '?[populate]=*');
