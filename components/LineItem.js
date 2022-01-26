@@ -5,7 +5,7 @@ function FormattedDate(date) {
     return <span>{sendDate}</span>
 }
 
-export default function LineItem({ component, goal, cost, budget, scheduled_send, complete }) {
+export default function LineItem({ component, goal, cost, budget, scheduled_send, complete, advertiser }) {
     return (
         <div className="pt-2">
             <p className="capitalize">
@@ -17,6 +17,9 @@ export default function LineItem({ component, goal, cost, budget, scheduled_send
                     <span className="ml-2 badge">Not Complete</span>
                 }
             </p>
+            {advertiser &&
+                <p>Advertiser: {advertiser}</p>
+            }
             <p>
                 <span>Impressions: </span>
                 <NumberFormat value={goal} displayType={'text'} thousandSeparator={true} />
