@@ -24,8 +24,9 @@ export default function Order({ id, attributes }) {
             </div>
             <section className="collapse-content space-y-4 divide-y divide-black">
                 <p>Line Items</p>
-                {attributes.line_items.map(({ __component, goal, cost, budget, scheduled_send, complete }) => (
+                {attributes.line_items.map(({ id, __component, goal, cost, budget, scheduled_send, complete }) => (
                     <LineItem
+                        key={id}
                         component={__component}
                         goal={goal}
                         cost={cost}
