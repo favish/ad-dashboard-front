@@ -1,44 +1,30 @@
-import NumberFormat from "react-number-format";
+import Stat from "./Stat";
+import NumberStat from "./NumberStat";
 
-function FormattedDate(date) {
-    const sendDate = new Date(date.date).toDateString();
-    return <span>{sendDate}</span>
-}
-
-export default function LineItem({ component, goal, cost, budget, scheduled_send, complete, advertiser }) {
+export default function LineItem({ component, goal, cost, budget, scheduled_send, complete, client, index }) {
     return (
-        <div className="pt-2">
-            <p className="capitalize">
-                {component.replace('order.', '')}
-                {complete &&
-                    <span className="ml-2 badge">Complete</span>
-                }
-                {!complete &&
-                    <span className="ml-2 badge">Not Complete</span>
-                }
-            </p>
-            {advertiser &&
-                <p>Advertiser: {advertiser}</p>
+        <div className="shadow stats w-full">
+            <Stat title={"#"} value={index + 1} />
+            <Stat title={"Type"} value={component.replace('order.', '')} />
+            {client &&
+                <div className="stat">
+                    <div className="stat-title">Client</div>
+                    <div className="stat-value text-base capitalize">{client}</div>
+                </div>
             }
-            <p>
-                <span>Impressions: </span>
-                <NumberFormat value={goal} displayType={'text'} thousandSeparator={true} />
-            </p>
-            <p>
-                <span>CPM: </span>
-                <NumberFormat className="inline-block" value={cost} displayType={'text'} thousandSeparator={true} prefix={'$'} />
-            </p>
+            <NumberStat title={"Impressions"} value={goal} />
+            <NumberStat title={"CPM"} value={cost} prefix={'$'} />
             {budget &&
-                <p>
-                    <span>Budget: </span>
-                    <NumberFormat value={budget} displayType={'text'} thousandSeparator={true} prefix={'$'} />
-                </p>
+                <NumberStat title={"Budget"} value={budget} prefix={'$'}/>
             }
             { scheduled_send &&
-                <p>
-                    <span>Send Date: </span>
-                    <FormattedDate date={scheduled_send} />
-                </p>
+                <Stat title={"Send Date"} value={scheduled_send} date={true}/>
+            }
+            {complete &&
+                <Stat title={"Status"} value={"Complete"} success={true}/>
+            }
+            {!complete &&
+                <Stat title={"Status"} value={"Not Complete"} success={false} />
             }
         </div>
     )

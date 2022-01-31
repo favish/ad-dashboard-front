@@ -22,9 +22,7 @@ export async function getServerSideProps(context) {
     });
 
     return {
-        props: {
-            orderDataSortedByStatus
-        },
+        props: { orderDataSortedByStatus },
     };
 }
 
@@ -32,7 +30,6 @@ export default function Home({ orderDataSortedByStatus }) {
     let totalOrderCount = 0;
 
     for (const property in orderDataSortedByStatus) {
-        console.info(`${orderDataSortedByStatus[property].length}`);
         totalOrderCount+= orderDataSortedByStatus[property].length;
     }
     return (
@@ -40,7 +37,9 @@ export default function Home({ orderDataSortedByStatus }) {
             <h2 className="text-center text-xl mt-4">Orders ({totalOrderCount})</h2>
             <section className="grid grid-cols-5 gap-4 p-10 max-w-screen-2xl m-auto">
                 <section className="">
-                    <h3 className="mb-10 badge badge-warning w-full p-4 text-base">Backlog ({orderDataSortedByStatus[0].length})</h3>
+                    <h3
+                        className="mb-10 inline-flex badge badge-warning w-full p-4 text-base tooltip cursor-help"
+                        data-tip="Missing creatives, payment, or other blocking status">Backlog ({orderDataSortedByStatus[0].length})</h3>
                     <ul className="space-y-4">
                         {orderDataSortedByStatus[0].map(({ id, attributes }) => (
                             <Order key={id} id={id} attributes={attributes} />
@@ -48,7 +47,11 @@ export default function Home({ orderDataSortedByStatus }) {
                     </ul>
                 </section>
                 <section className="">
-                    <h3 className="mb-10 badge badge-info w-full p-4 text-base">Ready ({orderDataSortedByStatus[1].length})</h3>
+                    <h3
+                        className="mb-10 inline-flex badge badge-info w-full p-4 text-base tooltip cursor-help"
+                        data-tip="Fully set up, but not running yet. Scheduled for future date.">
+                        Ready ({orderDataSortedByStatus[1].length})
+                    </h3>
                     <ul className="space-y-4">
                         {orderDataSortedByStatus[1].map(({ id, attributes }) => (
                             <Order key={id} id={id} attributes={attributes} />
@@ -56,7 +59,11 @@ export default function Home({ orderDataSortedByStatus }) {
                     </ul>
                 </section>
                 <section className="">
-                    <h3 className="mb-10 badge badge-info w-full p-4 text-base">Live ({orderDataSortedByStatus[2].length})</h3>
+                    <h3
+                        className="mb-10 badge inline-flex badge-info w-full p-4 text-base tooltip cursor-help"
+                        data-tip="Currently serving">
+                        Live ({orderDataSortedByStatus[2].length})
+                    </h3>
                     <ul className="space-y-4">
                         {orderDataSortedByStatus[2].map(({ id, attributes }) => (
                             <Order key={id} id={id} attributes={attributes} />
@@ -64,18 +71,28 @@ export default function Home({ orderDataSortedByStatus }) {
                     </ul>
                 </section>
                 <section className="">
-                    <h3 className="mb-10 badge badge-error w-full p-4 text-base">Paused ({orderDataSortedByStatus[3].length})</h3>
+                    <h3
+                        className="mb-10 inline-flex badge badge-error w-full p-4 text-base tooltip cursor-help"
+                        data-tip="Was active, but paused likely due to client request"
+                    >
+                        Paused ({orderDataSortedByStatus[3].length})
+                    </h3>
                     <ul className="space-y-4">
                         {orderDataSortedByStatus[3].map(({ id, attributes }) => (
-                            <Order key={id} id={id} attributes={attributes} />
+                            <Order key={id} id={id} attributes={attributes} pos={true}/>
                         ))}
                     </ul>
                 </section>
                 <section className="">
-                    <h3 className="mb-10 badge badge-success w-full p-4 text-base">Complete ({orderDataSortedByStatus[4].length})</h3>
+                    <h3
+                        className="mb-10 inline-flex badge badge-success w-full p-4 text-base tooltip cursor-help"
+                        data-tip="Served all it's line items to completion"
+                    >
+                        Complete ({orderDataSortedByStatus[4].length})
+                    </h3>
                     <ul className="space-y-4">
                         {orderDataSortedByStatus[4].map(({ id, attributes }) => (
-                            <Order key={id} id={id} attributes={attributes} />
+                            <Order key={id} id={id} attributes={attributes} pos={true}/>
                         ))}
                     </ul>
                 </section>

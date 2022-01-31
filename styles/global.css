@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.new-modal-box {
+    @apply modal-box;
+    max-width: 60rem;
+}
