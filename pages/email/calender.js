@@ -35,8 +35,9 @@ const myEventsList = [
 ]
 
 export async function getServerSideProps(context) {
-    const res = await fetch(apiEndpoint);
-    const data = await res.json();
+    const response = await fetch(apiEndpoint);
+    const data = await response.json();
+
     //TODO: This filters out orders that don't have email sends. Currently Strapi does not allow filtering by components. May be able to make custom route for this.
     const ordersWithEmail = data.data.filter(order => order.attributes.line_items.some(lineItem => lineItem.__component === "order.dedicated-email"));
 
@@ -62,6 +63,7 @@ export default function Calender({ ordersWithEmail }) {
     return (
         <Layout>
             <h1 className="text-center text-xl">Dedicated Email Calendar</h1>
+            <div className="divider"></div>
             <Calendar
                 className="p-10"
                 localizer={localizer}

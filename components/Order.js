@@ -15,7 +15,7 @@ function PaidBadge(props) {
 
 export default function Order({ id, attributes }) {
     return (
-        <li className="bg-slate-300 p-4 rounded-lg" key={id}>
+        <li className="bg-slate-300 p-2 rounded-lg" key={id}>
             <label htmlFor={"my-modal-" + id} className="modal-button">
                 <input type="checkbox" id={"my-modal-" + id} className="modal-toggle" />
                 <div className="modal">

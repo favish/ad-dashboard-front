@@ -4,5 +4,9 @@
 
 .new-modal-box {
     @apply modal-box;
-    max-width: 60rem;
+    max-width: 70rem;
+}
+
+.rbc-event-content {
+    font-size: 12px;
 }
