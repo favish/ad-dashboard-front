@@ -1,9 +1,8 @@
-import Layout from '../components/layout'
+import Layout from '../../components/layout'
 import React from 'react';
 import { useTable, useFilters, useGlobalFilter, usePagination, useExpanded, useSortBy } from "react-table";
 
-// const apiEndpoint = "https://strapi-iteh.onrender.com/api/orders?[populate]=*&pagination[pageSize]=50&sort=id%3Adesc";
-const apiEndpoint = "https://strapi-iteh.onrender.com/api/orders?[populate]=*&pagination[pageSize]=50&sort=id%3Adesc&filters[Archived][$ne]=true";
+const apiEndpoint = "https://strapi-iteh.onrender.com/api/orders?[populate]=*&pagination[pageSize]=50&sort=id%3Adesc&filters[Archived][$eq]=true";
 
 export async function getServerSideProps() {
     const res = await fetch(apiEndpoint);
@@ -75,6 +74,7 @@ function cleanString(string) {
 }
 
 function Table(row) {
+    console.info(row.data);
     const data = React.useMemo(() => row.data.original.test, []);
 
     const columns = React.useMemo(
@@ -244,6 +244,8 @@ const AllOrders = ({ sortedData }) => {
             test: subInventory,
         });
 
+        console.info(colData);
+
         subInventory = [];
         paid = null;
         url = "";
@@ -395,7 +397,7 @@ const AllOrders = ({ sortedData }) => {
 
     return (
         <Layout>
-            <h1 className="text-center text-xl">Current Orders</h1>
+            <h1 className="text-center text-xl">Archived Orders</h1>
             <div className="overflow-x-auto max-w-screen-2xl m-auto mt-6 mb-6">
                 <table {...getTableProps()} className="table w-full table-compact table-zebra">
                     <thead>

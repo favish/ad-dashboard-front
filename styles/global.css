@@ -10,3 +10,8 @@
 .rbc-event-content {
     font-size: 12px;
 }
+
+.rbc-toolbar-label {
+    font-size: 24px;
+    font-weight: bold;
+}

@@ -1,6 +1,11 @@
 function FormattedDate(date) {
-    const sendDate = new Date(date.date).toDateString();
-    return <span>{sendDate}</span>
+    // This helps offset the time zone for fields that only have date (no time or timezone) as they are incorrectly shown as the previous day due to how Date works.
+    const rawDate = new Date(date.date);
+    const correctedDate = new Date( rawDate.getTime() + Math.abs(rawDate.getTimezoneOffset()*60000) ).toDateString()
+
+    // const sendDate = new Date(date.date).toDateString();
+    // console.info("after: ", sendDate)
+    return <span>{correctedDate}</span>
 }
 
 export default function Stat({ title, value, date, success }) {
