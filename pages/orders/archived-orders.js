@@ -3,6 +3,7 @@ import React from 'react';
 import { useTable, useFilters, useGlobalFilter, usePagination, useExpanded, useSortBy } from "react-table";
 
 const apiEndpoint = "https://strapi-iteh.onrender.com/api/orders?[populate]=*&pagination[pageSize]=50&sort=id%3Adesc&filters[Archived][$eq]=true";
+const cmsDomain = "https://strapi-iteh.onrender.com";
 
 export async function getServerSideProps() {
     const res = await fetch(apiEndpoint);
@@ -221,7 +222,7 @@ const AllOrders = ({ sortedData }) => {
         });
 
         if (element.attributes.IO.data) {
-            url = <a href={`${element.attributes.IO.data.attributes.url}`} className="underline">View IO</a>
+            url = <a href={`${cmsDomain}${element.attributes.IO.data.attributes.url}`} className="underline">View IO</a>
         }
 
         if (element.attributes.scheduled_send) {

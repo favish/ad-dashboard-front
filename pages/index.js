@@ -2,8 +2,8 @@ import Layout from '../components/layout'
 import React from 'react';
 import { useTable, useFilters, useGlobalFilter, usePagination, useExpanded, useSortBy } from "react-table";
 
-// const apiEndpoint = "https://strapi-iteh.onrender.com/api/orders?[populate]=*&pagination[pageSize]=50&sort=id%3Adesc";
 const apiEndpoint = "https://strapi-iteh.onrender.com/api/orders?[populate]=*&pagination[pageSize]=50&sort=id%3Adesc&filters[Archived][$ne]=true";
+const cmsDomain = "https://strapi-iteh.onrender.com";
 
 export async function getServerSideProps() {
     const res = await fetch(apiEndpoint);
@@ -81,11 +81,19 @@ function Table(row) {
         () => [
             {
                 Header: 'Client',
-                accessor: 'client', // accessor is the "key" in the data
+                accessor: 'client',
             },
             {
                 Header: 'Type',
                 accessor: 'type',
+            },
+            {
+                Header: 'Impressions',
+                accessor: 'goal',
+            },
+            {
+                Header: 'Scheduled Date',
+                accessor: 'date',
             },
             {
                 Header: 'Paid',
@@ -195,7 +203,7 @@ const AllOrders = ({ sortedData }) => {
             subItem.paid = paid;
             subItem.status = status;
             subItem.date = formattedDate;
-
+            subItem.goal = parseInt(lineItem.goal).toLocaleString();
             subItem.invoice = invoice;
 
             switch(lineItem.__component) {
@@ -221,7 +229,7 @@ const AllOrders = ({ sortedData }) => {
         });
 
         if (element.attributes.IO.data) {
-            url = <a href={`${element.attributes.IO.data.attributes.url}`} className="underline">View IO</a>
+            url = <a href={`${cmsDomain}${element.attributes.IO.data.attributes.url}`} className="underline">View IO</a>
         }
 
         if (element.attributes.scheduled_send) {
@@ -273,7 +281,7 @@ const AllOrders = ({ sortedData }) => {
                             style: { paddingLeft: `${row.depth * 2}rem`, },
                         })}
                     >
-                        {row.isExpanded ? '-' : '+'}
+                        {row.isExpanded ? <img src="/minus.png" className="w-5" /> : <img src="/plus.png" className="w-5" />}
                     </span>
             },
             {
@@ -304,43 +312,6 @@ const AllOrders = ({ sortedData }) => {
             },
             {
                 Header: 'IO',
-                disableFilters: true,
-                accessor: 'col6',
-            },
-        ],
-        []
-    )
-
-    const subColumns = React.useMemo(
-        () => [
-            {
-                Header: 'Client',
-                accessor: 'col2',
-            },
-            {
-                Header: 'Type',
-                accessor: 'col5',
-                disableFilters: true,
-            },
-            {
-                Header: 'Scheduled Date',
-                accessor: 'col7',
-                disableFilters: true,
-            },
-            {
-                Header: 'Paid',
-                accessor: 'col3',
-                Filter: SelectColumnFilter,
-                filter: 'includes'
-            },
-            {
-                Header: 'Status',
-                accessor: 'col4',
-                Filter: SelectColumnFilter,
-                filter: 'includes'
-            },
-            {
-                Header: 'Invoice',
                 disableFilters: true,
                 accessor: 'col6',
             },
@@ -435,7 +406,7 @@ const AllOrders = ({ sortedData }) => {
                                 </tr>
                                 {row.isExpanded ? (
                                     <tr>
-                                        <td colSpan={visibleColumns.length} className="pl-32">
+                                        <td colSpan={visibleColumns.length} className="pl-16">
                                             {renderRowSubComponent({ row })}
                                         </td>
                                     </tr>
