@@ -166,6 +166,8 @@ const AllOrders = ({ sortedData }) => {
             let classes = "w-8 mr-1 ";
             let status = "";
             let rawDate = "-";
+            let rawStartDate;
+            let rawEndDate;
             let formattedDate = "-";
             let client = "NA";
             let invoice = "-";
@@ -185,10 +187,14 @@ const AllOrders = ({ sortedData }) => {
 
             if (lineItem.scheduled_send) {
                 rawDate = new Date(lineItem.scheduled_send);
-                formattedDate = new Date( rawDate.getTime() + Math.abs(rawDate.getTimezoneOffset()*60000) ).toDateString()
+                formattedDate = new Date( rawDate.getTime() + Math.abs(rawDate.getTimezoneOffset()*60000) ).toLocaleDateString('en-us', {  month:"numeric", day: "numeric", year:"numeric" })
             } else if (lineItem.post_date) {
                 rawDate = new Date(lineItem.post_date);
-                formattedDate = new Date( rawDate.getTime() + Math.abs(rawDate.getTimezoneOffset()*60000) ).toDateString()
+                formattedDate = new Date(rawDate.getTime() + Math.abs(rawDate.getTimezoneOffset() * 60000)).toLocaleDateString('en-us', {  month:"numeric", day: "numeric", year:"numeric" })
+            } else if (lineItem.start) {
+                rawStartDate = new Date(lineItem.start);
+                rawEndDate = new Date(lineItem.end);
+                formattedDate = new Date(rawStartDate.getTime() + Math.abs(rawStartDate.getTimezoneOffset() * 60000)).toLocaleDateString() + " - " + new Date(rawEndDate.getTime() + Math.abs(rawEndDate.getTimezoneOffset() * 60000)).toLocaleDateString()
             }
 
             if (lineItem.client) {
