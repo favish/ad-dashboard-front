@@ -399,7 +399,7 @@ const AllOrders = ({ sortedData }) => {
     return (
         <Layout>
             <h1 className="text-center text-xl">Archived Orders</h1>
-            <div className="overflow-x-auto max-w-screen-2xl m-auto mt-6 mb-6">
+            <div className="overflow-x-auto 2xl:max-w-screen-2xl md:max-w-screen-xl m-auto mt-6 mb-6">
                 <table {...getTableProps()} className="table w-full table-compact table-zebra">
                     <thead>
                     {headerGroups.map(headerGroup => (

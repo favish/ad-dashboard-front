@@ -3,6 +3,7 @@ import React from 'react';
 import { useTable, useFilters, useGlobalFilter, usePagination, useExpanded, useSortBy } from "react-table";
 
 const apiEndpoint = "https://strapi-iteh.onrender.com/api/orders?[populate]=*&pagination[pageSize]=50&sort=id%3Adesc&filters[Archived][$ne]=true";
+// const apiEndpoint = "http://localhost:1337/api/orders?[populate]=*&pagination[pageSize]=50&sort=id%3Adesc&filters[Archived][$ne]=true";
 const cmsDomain = "https://strapi-iteh.onrender.com";
 
 export async function getServerSideProps() {
@@ -228,6 +229,7 @@ const AllOrders = ({ sortedData }) => {
                 case "order.sponsored-article":
                     inventory.push(<img className={classes} src="/sponsored.png"/>);
                     subItem.type = "Sponsored Post";
+                    subItem.goal = 1;
                     break;
             }
             subInventory.push(subItem)
@@ -373,7 +375,7 @@ const AllOrders = ({ sortedData }) => {
     return (
         <Layout>
             <h1 className="text-center text-xl">Current Orders</h1>
-            <div className="overflow-x-auto max-w-screen-2xl m-auto mt-6 mb-6">
+            <div className="overflow-x-auto 2xl:max-w-screen-2xl md:max-w-screen-xl m-auto mt-6 mb-6">
                 <table {...getTableProps()} className="table w-full table-compact table-zebra">
                     <thead>
                     {headerGroups.map(headerGroup => (

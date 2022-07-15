@@ -15,8 +15,8 @@ export async function getServerSideProps() {
 }
 
 function calcDates(start, end) {
-    const differenceBetween = Math.ceil((end.getTime() - start.getTime()) / (100 * 3600 * 24));
-    const daysIn = Math.ceil((end.getTime() - new Date().getTime()) / (100 * 3600 * 24));;
+    const differenceBetween = Math.ceil((end.getTime() - start.getTime()) / (1000 * 3600 * 24));
+    const daysIn = Math.ceil((new Date().getTime() - start.getTime()) / (1000 * 3600 * 24));
 
     return Math.round(daysIn / differenceBetween * 100);
 }

@@ -72,6 +72,11 @@ export default function Calender({ mergedPostsAndEmails }) {
     return (
         <Layout>
             <div className="divider"></div>
+            <div className="p-3 pt-0 text-right">
+                <h3 className="mb-1">Legend</h3>
+                <span className="bg-blue-500 mt-2 mr-2 p-1 rounded w-56 text-white">Dedicated Email Sends</span>
+                <span className="bg-green-600 p-1 rounded w-56 text-white">Sponsored Posts</span>
+            </div>
             <Calendar
                 className="p-10 pt-2 pb-2"
                 localizer={localizer}
@@ -87,11 +92,6 @@ export default function Calender({ mergedPostsAndEmails }) {
                     month: true,
                 }}
             />
-            <div className="p-10 pt-0">
-                <h3 className="mb-1">Legend</h3>
-                <span className="bg-blue-500 mt-2 mr-2 p-1 rounded w-56 text-white">Dedicated Email Sends</span>
-                <span className="bg-green-600 p-1 rounded w-56 text-white">Sponsored Posts</span>
-            </div>
         </Layout>
     )
 }
