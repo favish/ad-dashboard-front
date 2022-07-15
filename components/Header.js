@@ -15,6 +15,12 @@ export default function Header() {
                         <Link href="/email/calender">
                             <a className="btn btn-sm btn-ghost">Email & Sponsored Post Calender</a>
                         </Link>
+                        <Link href="/orders/gantt">
+                            <a className="btn btn-sm btn-ghost">Orders - Gantt</a>
+                        </Link>
+                        {/*<Link href="/orders/need-invoice">*/}
+                        {/*    <a className="btn btn-sm btn-ghost">Orders That Need Invoicing</a>*/}
+                        {/*</Link>*/}
                         <Link href="/orders/archived-orders">
                             <a className="btn btn-sm btn-ghost">Archived Orders</a>
                         </Link>
