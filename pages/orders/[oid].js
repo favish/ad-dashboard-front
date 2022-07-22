@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import React, { useState, useRef } from 'react';
 import EmailReportCard from "../../components/EmailReportCard";
 
+const backend = "https://strapi-iteh.onrender.com";
 const apiEndpoint = "https://strapi-iteh.onrender.com/api/orders/?[populate]=*&filters[order_id][$eq]=";
 // export const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://0.0.0.0:1337'
 // const apiEndpoint = API_URL + "/api/orders/?[populate]=*&filters[order_id][$eq]=";
@@ -39,7 +40,7 @@ const Order = (data) => {
 
     async function handleClick(e) {
         setButtonDisabled(true)
-        const res = await fetch('http://localhost:1337/api/order/report/gam/' + oid);
+        const res = await fetch(backend + '/api/order/report/gam/' + oid);
 
         if (res.status < 300) {
             refreshData();
@@ -48,7 +49,7 @@ const Order = (data) => {
     }
 
     async function handlePostUpClick(id, index) {
-        const res = await fetch('http://localhost:1337/api/order/report/email/' + oid + "/" + id);
+        const res = await fetch(backend + '/api/order/report/email/' + oid + "/" + id);
         refs.current[index].disabled = true;
 
         if (res.status < 300) {

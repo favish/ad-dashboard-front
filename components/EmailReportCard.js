@@ -1,5 +1,6 @@
 import { intervalToDuration, differenceInDays } from "date-fns";
 import React, { useRef, useState, useEffect } from "react";
+const backend = "https://strapi-iteh.onrender.com";
 
 export default function EmailReportCard({ sendDate, mailingId = 0, report = [], refresh, orderId }) {
     const formattedDate = new Date(sendDate).toLocaleDateString();
@@ -33,7 +34,7 @@ export default function EmailReportCard({ sendDate, mailingId = 0, report = [], 
     console.info(specificReport);
 
     async function handleClick(id, index) {
-        const res = await fetch('http://localhost:1337/api/order/report/email/' + orderId + "/" + mailingId);
+        const res = await fetch(backend + '/api/order/report/email/' + orderId + "/" + mailingId);
         ref.current.disabled = true;
 
         if (res.status < 300) {
