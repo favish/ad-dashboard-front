@@ -1,8 +1,10 @@
 import Layout from '../components/layout'
 import React from 'react';
 import { useTable, useFilters, useGlobalFilter, usePagination, useExpanded, useSortBy } from "react-table";
+import Link from 'next/link';
 
 const apiEndpoint = "https://strapi-iteh.onrender.com/api/orders?[populate]=*&pagination[pageSize]=50&sort=id%3Adesc&filters[Archived][$ne]=true";
+// export const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://0.0.0.0:1337'
 // const apiEndpoint = "http://localhost:1337/api/orders?[populate]=*&pagination[pageSize]=50&sort=id%3Adesc&filters[Archived][$ne]=true";
 const cmsDomain = "https://strapi-iteh.onrender.com";
 
@@ -250,6 +252,8 @@ const AllOrders = ({ sortedData }) => {
             paid = "Unpaid";
         }
 
+        const link = "/orders/" + element.attributes.order_id;
+
         colData.push({
             col1: element.attributes.order_id,
             col2: element.attributes.advertiser.data.attributes.advertiser_name,
@@ -258,6 +262,7 @@ const AllOrders = ({ sortedData }) => {
             col5: inventory,
             col6: url,
             test: subInventory,
+            col7: <a href={link} className="underline">View Stats</a>,
         });
 
         subInventory = [];
@@ -322,6 +327,11 @@ const AllOrders = ({ sortedData }) => {
                 Header: 'IO',
                 disableFilters: true,
                 accessor: 'col6',
+            },
+            {
+                Header: 'Stats',
+                disableFilters: true,
+                accessor: 'col7',
             },
         ],
         []
