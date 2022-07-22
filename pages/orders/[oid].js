@@ -2,6 +2,7 @@ import Layout from '../../components/layout'
 import { useRouter } from 'next/router';
 import React, { useState, useRef } from 'react';
 import EmailReportCard from "../../components/EmailReportCard";
+import GamReportCard from "../../components/GamReportCard";
 
 const backend = "https://strapi-iteh.onrender.com";
 const apiEndpoint = "https://strapi-iteh.onrender.com/api/orders/?[populate]=*&filters[order_id][$eq]=";
@@ -19,9 +20,7 @@ export async function getServerSideProps(context) {
 
 const Order = (data) => {
     const [buttonDisabled, setButtonDisabled] = useState(false);
-    const refs = useRef([]);
-    console.info(data);
-    const gamBtnRef = useRef();
+    const [loading, setLoading] = useState(false);
     const router = useRouter();
     const { oid } = router.query;
     const advertiserName = data.data.data[0].attributes.advertiser.data.attributes.advertiser_name;
@@ -39,25 +38,46 @@ const Order = (data) => {
     }
 
     async function handleClick(e) {
-        setButtonDisabled(true)
+        setLoading(true);
         const res = await fetch(backend + '/api/order/report/gam/' + oid);
 
         if (res.status < 300) {
             refreshData();
-            setButtonDisabled(false)
+            setLoading(false);
         }
     }
 
-    async function handlePostUpClick(id, index) {
-        const res = await fetch(backend + '/api/order/report/email/' + oid + "/" + id);
-        refs.current[index].disabled = true;
+    function NormalButton() {
+        return (
+            <button
+                onClick={() => handleClick()}
+                className="btn btn-primary mt-10"
+                disabled={buttonDisabled}
+            >
+                Refresh All GAM Reports</button>
+        )
+    }
 
-        if (res.status < 300) {
-            refreshData();
-            setInterval(function() {
-                refs.current[index].disabled = false;
-            }, 3000)
+    function LoadingButton() {
+        return (
+            <button
+                onClick={() => handleClick()}
+                className="btn btn-primary mt-10 disabled"
+            >
+                <svg className="animate-spin h-5 w-5 mr-3" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                            strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>Fetching...</button>
+        )
+    }
+
+    function Button() {
+         if (loading) {
+            return <LoadingButton />
         }
+        return <NormalButton />
     }
 
     return (
@@ -66,51 +86,53 @@ const Order = (data) => {
                 <p className="text-center font-bold text-xl">Order: {oid}</p>
                 <p className="text-center font-bold mb-10">Advertiser: {advertiserName}</p>
                 {gamItems &&
-                    <>
-                        <p className="mt-4 mb-4">Google Ad Manager Reports:</p>
-                        <div className="mb-10 p-6 border-solid border-4 border-black">
-                            <div className="flex flex-wrap space-x-4 mt-4">
-                                {report.gam && report.gam.map((report, index) => {
-                                    return (
-                                        <div key={index} className="card w-96 bg-neutral text-neutral-content shadow-xl">
-                                            <div className="card-body">
-                                                <h2 className="card-title">{report.name}</h2>
-                                                <p>Delivered Impressions: {parseInt(report.imps).toLocaleString('en-US')}</p>
-                                                <p>Clicks: {parseInt(report.clicks).toLocaleString('en-US')}</p>
-                                                <p>CTR: {(report.clicks / report.imps * 100).toFixed(2)}%</p>
-                                                <p>Delivery: {parseInt(report.delivery).toLocaleString('en-US')}%</p>
-                                                <p>Status: {report.status}</p>
-                                            </div>
-                                        </div>
-                                    )
-                                })}
-                            </div>
-                            <button
-                                className="btn btn-primary mt-10"
-                                disabled={buttonDisabled}
-                                onClick={handleClick}
-                            >
-                                {buttonDisabled ? 'Refreshing...' : 'Refresh All GAM Reports'}
-                            </button>
+                    <div className="collapse collapse-arrow border border-base-300 bg-base-100 rounded-box">
+                        <input type="checkbox" />
+                        <div className="collapse-title text-xl font-medium">
+                            Display (GAM) Reports
                         </div>
-                    </>
+                        <div className="collapse-content">
+                            <div className="p-6">
+                                <div className="flex flex-wrap space-x-4 mt-4">
+                                    {report.gam && report.gam.map((report, index) => {
+                                        return (
+                                            <GamReportCard
+                                                key={index}
+                                                name={report.name}
+                                                impressions={report.imps}
+                                                clicks={report.clicks}
+                                                delivery={report.delivery}
+                                                status={report.status}
+                                            />
+                                        )
+                                    })}
+                                </div>
+                                <Button />
+                            </div>
+                        </div>
+                    </div>
                 }
                 {postUpItemsExist &&
-                    <>
-                        <p className="mt-4">PostUp Reports:</p>
-                        <div className="flex space-x-4 mt-4 mb-10 p-6 border-solid border-4 border-black">
-                            {postUpItems.map((item, index) => (
-                                <EmailReportCard
-                                    key={index}
-                                    sendDate={item.scheduled_send}
-                                    mailingId={item.postup}
-                                    report={report}
-                                    refresh={refreshData}
-                                    orderId={oid}
-                                />
-                            ))}
+                    <div className="collapse collapse-arrow border border-base-300 bg-base-100 rounded-box">
+                        <input type="checkbox" />
+                        <div className="collapse-title text-xl font-medium">
+                            Dedicated Email Reports
                         </div>
-                    </>
+                        <div className="collapse-content">
+                            <div className="flex p-6 flex-wrap justify-between space-4">
+                                {postUpItems.map((item, index) => (
+                                    <EmailReportCard
+                                        key={index}
+                                        sendDate={item.scheduled_send}
+                                        mailingId={item.postup}
+                                        report={report}
+                                        refresh={refreshData}
+                                        orderId={oid}
+                                    />
+                                ))}
+                            </div>
+                        </div>
+                    </div>
                 }
                 <p className="mt-4">Passendo Reports: Coming Soon!</p>
                 <p className="mt-4">Sponsored Article Reports: Coming Soon!</p>
