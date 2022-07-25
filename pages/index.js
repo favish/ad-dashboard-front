@@ -410,7 +410,7 @@ const AllOrders = ({ sortedData }) => {
                                     {row.cells.map((cell, x) => {
                                         let name = "";
                                         if (x === 3) {
-                                            name = "flex";
+                                            name = "flex overflow-x-scroll";
                                         }
                                         return (
                                             <td
